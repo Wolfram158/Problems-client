@@ -1,5 +1,7 @@
 package ru.wolfram.problems_client
 
+import com.github.ajalt.mordant.markdown.Markdown
+import com.github.ajalt.mordant.terminal.Terminal
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
@@ -16,10 +18,11 @@ class Application {
     companion object {
         private val gson = Gson()
         private var tasks = listOf<Task>()
-        private var taskNameToDescription = mutableMapOf<String, String>()
+        private var taskNameToDescription = HashMap<String, String>()
         private val listType: Type? = object : TypeToken<List<Task?>?>() {}.type
         private val client = HttpClient {}
         private val configuration = getConfiguration()
+        private val terminal = Terminal()
 
         @JvmStatic
         @OptIn(InternalAPI::class)
@@ -44,6 +47,12 @@ class Application {
                                             handleSolve(parts[1], parts[2])
                                         }
                                     }
+
+                                    "show" -> {
+                                        if (parts.size > 1) {
+                                            handleShow(parts[1])
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -57,6 +66,10 @@ class Application {
         private fun getConfiguration(): Configuration {
             val configurationString = File("src/main/resources/configuration.json").readText()
             return gson.fromJson(configurationString, Configuration::class.java)
+        }
+
+        private fun handleShow(taskName: String) {
+            terminal.println(Markdown(taskNameToDescription[taskName] ?: TODO()))
         }
 
         @OptIn(InternalAPI::class)
@@ -74,7 +87,7 @@ class Application {
             tasks = gson.fromJson(client.get("${configuration.prefixApi}/tasks") {
                 basicAuth(configuration.username, configuration.password)
             }.rawContent.readBuffer.readText(), listType)
-            taskNameToDescription = tasks.associateBy({ it.name }, { it.descriptionMarkdown }).toMutableMap()
+            taskNameToDescription = HashMap(tasks.associateBy({ it.name.replace(" ", "_") }, { it.descriptionMarkdown }))
             println(tasks.joinToString(separator = ", ") { task -> task.name })
         }
 

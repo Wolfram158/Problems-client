@@ -16,8 +16,11 @@ repositories {
 }
 
 val ktorVersion = "3.2.3"
+val mordantVersion = "3.0.2"
 
 dependencies {
+    implementation("com.github.ajalt.mordant:mordant:${mordantVersion}")
+    implementation("com.github.ajalt.mordant:mordant-markdown:${mordantVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
