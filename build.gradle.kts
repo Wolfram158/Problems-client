@@ -8,7 +8,7 @@ group = "ru.wolfram"
 version = "1.0-SNAPSHOT"
 
 application {
-    mainClass = "ru.wolfram.problems_client.Application"
+    mainClass = "ru.wolfram.problems_client.presentation.Application"
 }
 
 repositories {
@@ -19,12 +19,15 @@ val ktorVersion = "3.2.3"
 val mordantVersion = "3.0.2"
 
 dependencies {
-    implementation("com.github.ajalt.mordant:mordant:${mordantVersion}")
-    implementation("com.github.ajalt.mordant:mordant-markdown:${mordantVersion}")
+    implementation("com.github.ajalt.mordant:mordant:$mordantVersion")
+    implementation("com.github.ajalt.mordant:mordant-markdown:$mordantVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp-jvm:3.2.3")
 
     testImplementation(kotlin("test"))
 }

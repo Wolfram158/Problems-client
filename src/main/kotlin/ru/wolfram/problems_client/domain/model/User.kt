@@ -1,0 +1,9 @@
+package ru.wolfram.problems_client.domain.model
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class User(
+    val username: String,
+    val password: String
+)

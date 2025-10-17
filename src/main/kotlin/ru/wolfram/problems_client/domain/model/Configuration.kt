@@ -1,4 +1,4 @@
-package ru.wolfram.problems_client
+package ru.wolfram.problems_client.domain.model
 
 data class Configuration(
     val username: String,
